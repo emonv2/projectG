@@ -35,24 +35,31 @@ const Login = () => {
 
   const router = useRouter();
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!agree || !email || !pass) {
       setErr(true);
       return;
     }
     setVisible(true);
-    const domain = process.env.NEXT_PUBLIC_MY_DOMAIN;
-    await axios
-      .post(`${domain}/api/user_signup`, {
-        name,
-        email,
+
+    const options = {
+      method: "POST",
+      url: "https://gamerhubapi.herokuapp.com/user/add",
+      headers: { "Content-Type": "application/json" },
+      data: {
+        username: name,
+        email: email,
         password: pass,
-      })
+      },
+    };
+
+    axios
+      .request(options)
       .then(function (res) {
-        if (res.data.success) {
+        if (res.data.status) {
           router.push("/dashbord");
         } else {
-          getAlert(["Error!", res.data.err]);
+          getAlert(["Error!", res.data.massage]);
         }
         setVisible(false);
 
@@ -61,6 +68,9 @@ const Login = () => {
         setEmail("");
         setPass("");
         setErr(false);
+      })
+      .catch(function (error) {
+        getAlert(["Error!", "Signup req failed."]);
       });
   };
   const handleClose = () => {

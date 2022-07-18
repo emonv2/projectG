@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Anchor,
   Avatar,
@@ -17,10 +17,21 @@ import {
 import { setting } from "../utility/setting";
 import Link from "next/link";
 import { Login, UserPlus } from "tabler-icons-react";
+import { getCookie } from "cookies-next";
 
 export const Navbar = () => {
   const [logged, setLogged] = useState(false);
   const [opened, setOpened] = useState(false);
+
+  const [userMail, setUserMail] = useState("");
+
+  useEffect(() => {
+    setUserMail(getCookie("email"));
+
+    if (userMail) {
+      setLogged(true);
+    }
+  }, [userMail]);
 
   return (
     <>
@@ -103,12 +114,12 @@ export const Navbar = () => {
               {logged ? (
                 <Group spacing="lg">
                   <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-                    <Text>Jahidul</Text>
+                    <Text>{userMail.split("@")[0]}</Text>
                   </MediaQuery>
                   <Menu
                     control={
                       <Avatar color="teal" radius="xl">
-                        <Text>J</Text>
+                        <Text>{userMail.slice(0, 1).toUpperCase()}</Text>
                       </Avatar>
                     }
                   >

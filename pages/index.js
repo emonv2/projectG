@@ -8,7 +8,7 @@ import RecentReviews from "../components/RecentReviews";
 import { useWindowScroll } from "@mantine/hooks";
 import { ArrowUp } from "tabler-icons-react";
 
-export default function Home({ data }) {
+export default function Home({ games }) {
   const [scroll, scrollTo] = useWindowScroll();
 
   return (
@@ -38,7 +38,7 @@ export default function Home({ data }) {
 
       <Paper radius={0} style={{ background: "#F8F9FA" }}>
         <Navbar />
-        <Hero />
+        <Hero game={games} />
       </Paper>
       <GamesSection />
       <RecentReviews />
@@ -47,13 +47,17 @@ export default function Home({ data }) {
   );
 }
 
-export async function getServerSideProps() {
-  //const res = await fetch("http://localhost:3000/api/getGames");
-  //const data = await res.json();
-
-  return {
-    props: {
-      data: [],
-    },
+export const getServerSideProps = async ({ req, res }) => {
+  const options = {
+    method: "GET",
   };
-}
+
+  const resData = await fetch(
+    "https://gamerhubapi.herokuapp.com/games/featureGames",
+    options
+  );
+
+  const data = await resData.json();
+
+  return { props: { games: data } };
+};

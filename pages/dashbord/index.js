@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppShell,
   Navbar,
@@ -18,10 +18,18 @@ import { setting } from "../../utility/setting";
 
 import Link from "next/link";
 import Head from "next/head";
+import { getCookie } from "cookies-next";
 
 const Dashbord = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+
+  const [userMail, setUserMail] = useState("example@mail.com");
+
+  useEffect(() => {
+    setUserMail(getCookie("email"));
+  }, []);
+
   return (
     <>
       <Head>
@@ -127,12 +135,12 @@ const Dashbord = () => {
               <Box>
                 <Group>
                   <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-                    <Text>Jahidul</Text>
+                    <Text>{userMail.split("@")[0]}</Text>
                   </MediaQuery>
                   <Menu
                     control={
                       <Avatar color="teal" radius="xl">
-                        <Text>J</Text>
+                        <Text>{userMail.slice(0, 1).toUpperCase()}</Text>
                       </Avatar>
                     }
                   >

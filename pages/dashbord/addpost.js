@@ -20,23 +20,34 @@ import {
   InputWrapper,
   Button,
   MantineTheme,
+  Notification,
+  Modal,
 } from "@mantine/core";
-import { setting } from "../../utility/setting";
+import { getAlert, setting } from "../../utility/setting";
 import RichTextEditor from "../../components/RicText";
 import { v4 as uuidv4 } from "uuid";
 import { useInputState } from "@mantine/hooks";
 
-import { Upload, Photo, X, Icon as TablerIcon } from "tabler-icons-react";
+import {
+  Upload,
+  Photo,
+  X,
+  Icon as TablerIcon,
+  Tag,
+  DeviceGamepad,
+  Check,
+} from "tabler-icons-react";
 import { Dropzone, DropzoneStatus, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 
 import Link from "next/link";
 import Head from "next/head";
-import { At } from "tabler-icons-react";
 
 import { storage } from "../../utility/firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import Swal from "sweetalert2";
 import Image from "next/image";
+import { getCookie } from "cookies-next";
+import axios from "axios";
 
 const AddPost = () => {
   const [prog, setProg] = useState("");
@@ -45,7 +56,16 @@ const AddPost = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const [title, setTitle] = useInputState("");
+  const [tag, setTag] = useInputState("");
   const [description, setDescription] = useInputState("");
+  const [token, setToken] = useState("");
+  const [userMail, setUserMail] = useState("");
+  const [tost, setTost] = useState(false);
+
+  useEffect(() => {
+    setToken(getCookie("token"));
+    setUserMail(getCookie("email"));
+  }, []);
 
   const handleChange = (files) => {
     const file = files[0];
@@ -84,16 +104,33 @@ const AddPost = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(title);
-    console.log(description);
-    console.log(imgUrls);
-
-    const body = {
-      title,
-      description,
-      imgUrls,
+    const options = {
+      method: "POST",
+      url: "https://gamerhubapi.herokuapp.com/games/addGames",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        title: title,
+        thumbnail: imgUrls,
+        description: description,
+        tag: tag,
+      },
     };
-    axios.post("http://localhost:8000/api/add_post", body);
+
+    axios
+      .request(options)
+      .then(function (response) {
+        setTost(true);
+        setTitle("");
+        setImgUrls("");
+        setDescription("");
+        setTag("");
+      })
+      .catch(function (error) {
+        getAlert(["Error!", "Something went wrong"]);
+      });
   };
 
   const status = "";
@@ -252,12 +289,12 @@ const AddPost = () => {
               <Box>
                 <Group>
                   <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-                    <Text>Jahidul</Text>
+                    <Text>{userMail.split("@")[0]}</Text>
                   </MediaQuery>
                   <Menu
                     control={
                       <Avatar color="teal" radius="xl">
-                        <Text>J</Text>
+                        <Text>{userMail.slice(0, 1).toUpperCase()}</Text>
                       </Avatar>
                     }
                   >
@@ -304,7 +341,7 @@ const AddPost = () => {
             description="Please enter your games name."
           >
             <Input
-              icon={<At />}
+              icon={<DeviceGamepad />}
               placeholder="Pubg"
               sx={() => ({
                 width: "70%",
@@ -337,6 +374,7 @@ const AddPost = () => {
           <InputWrapper
             label="Description"
             description="Type your description about your games"
+            sx={{ paddingTop: "10px" }}
           >
             <RichTextEditor
               value={description}
@@ -349,6 +387,27 @@ const AddPost = () => {
             />
           </InputWrapper>
 
+          <InputWrapper
+            label="Add Tags"
+            description="Add tags for your games using comma"
+            sx={{ paddingTop: "10px" }}
+          >
+            <Input
+              icon={<Tag />}
+              placeholder="example 1,example 2"
+              sx={() => ({
+                width: "70%",
+                marginBottom: "10px",
+
+                "@media (max-width: 755px)": {
+                  width: "100%",
+                },
+              })}
+              value={tag}
+              onChange={setTag}
+            />
+          </InputWrapper>
+
           <Button
             variant="filled"
             sx={{ marginTop: "10px" }}
@@ -356,6 +415,26 @@ const AddPost = () => {
           >
             Create Post
           </Button>
+          <Modal
+            opened={tost}
+            onClose={() => setTost(false)}
+            title="Successful"
+          >
+            Your post successfully added.
+          </Modal>
+          {/* {tost ? (
+            <>
+              <Notification
+                icon={<Check size={18} />}
+                color="teal"
+                title="Teal notification"
+              >
+                This is teal notification with icon
+              </Notification>
+            </>
+          ) : (
+            ""
+          )} */}
         </Box>
       </AppShell>
     </>

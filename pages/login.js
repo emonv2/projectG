@@ -12,6 +12,7 @@ import {
   Paper,
   Space,
   Title,
+  PasswordInput,
 } from "@mantine/core";
 import Image from "next/image";
 import Head from "next/head";
@@ -23,6 +24,7 @@ import { useInputState } from "@mantine/hooks";
 import axios from "axios";
 import { getAlert } from "../utility/setting";
 import { useRouter } from "next/router";
+import { setCookie } from "cookies-next";
 
 const Login = () => {
   const [visible, setVisible] = useState(false);
@@ -39,19 +41,25 @@ const Login = () => {
       return;
     }
     setVisible(true);
-    const domain = process.env.NEXT_PUBLIC_MY_DOMAIN;
 
-    await axios
-      .post(`${domain}/api/user_login`, {
-        email,
-        password: pass,
-      })
+    const options = {
+      method: "POST",
+      url: "https://gamerhubapi.herokuapp.com/user/login",
+      headers: { "Content-Type": "application/json" },
+      data: { email, password: pass },
+    };
+
+    axios
+      .request(options)
       .then(function (res) {
-        console.log(res.data);
-        if (res.data.success) {
+        if (res.data.status) {
+          setCookie("token", res.data.token);
+          setCookie("email", res.data.email);
+          setCookie("userid", res.data.userid);
+
           router.push("/dashbord");
         } else {
-          getAlert(["Error!", res.data.err]);
+          getAlert(["Error!", res.data.massage]);
         }
 
         setVisible(false);
@@ -59,6 +67,10 @@ const Login = () => {
         setAgree(false);
         setEmail("");
         setPass("");
+      })
+      .catch(function (error) {
+        getAlert(["Error!", "Login failed !"]);
+        setVisible(false);
       });
   };
   const handleClose = () => {
@@ -104,7 +116,16 @@ const Login = () => {
             </Grid.Col>
 
             <Grid.Col lg={6} md={12} sm={12}>
-              <Box>
+              <Box
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  padding: "1rem",
+                }}
+              >
                 <LoadingOverlay
                   loaderProps={{ size: "lg", color: "white" }}
                   visible={visible}
@@ -141,7 +162,7 @@ const Login = () => {
                   onChange={setEmail}
                 />
 
-                <Input
+                <PasswordInput
                   icon={<Key />}
                   variant="filled"
                   placeholder="Password"

@@ -14,9 +14,19 @@ import {
 } from "@mantine/core";
 import Image from "next/image";
 import React from "react";
-import { Eye } from "tabler-icons-react";
+import { Eye, Tags } from "tabler-icons-react";
 
-const Hero = () => {
+const Hero = ({ game }) => {
+  console.log(game);
+
+  const totalReview = game.data[0].review;
+  const tags = game.data[0].tag.split(",");
+
+  //console.log(tags);
+
+  //const mep = tags.filter((item) => item != " ");
+  console.log(mep);
+
   return (
     <>
       <Box style={{ padding: "10vh 0" }}>
@@ -33,9 +43,7 @@ const Hero = () => {
                 <Box>
                   <AspectRatio ratio={16 / 9}>
                     <Image
-                      src={
-                        "https://images.unsplash.com/photo-1527118732049-c88155f2107c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80"
-                      }
+                      src={game.data[0].thumbnail}
                       height={"100%"}
                       width={"100%"}
                       layout="fill"
@@ -50,15 +58,17 @@ const Hero = () => {
               <Box>
                 <Stack>
                   <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
-                    <Title order={5}>Player Unknown - Pubg</Title>
+                    <Title order={5}>{game.data[0].title}</Title>
                   </MediaQuery>
                   <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
-                    <Title order={1}>Player Unknown - Pubg</Title>
+                    <Title order={1}>{game.data[0].title}</Title>
                   </MediaQuery>
                   <Group>
-                    <Badge color="teal" size="sm" variant="outline">
-                      pubg
-                    </Badge>
+                    {tags.map((tag) => {
+                      <Badge color="teal" size="sm" variant="outline">
+                        {tag}
+                      </Badge>;
+                    })}
                     <Badge color="teal" size="sm" variant="outline">
                       Player Unknown
                     </Badge>
@@ -67,11 +77,7 @@ const Hero = () => {
                     order={6}
                     style={{ fontWeight: "400", textAlign: "justify" }}
                   >
-                    A New World Created By Hidetaka Miyazaki And George R. R.
-                    Martin. ELDEN RING, developed by FromSoftware, Inc. and
-                    BANDAI NAMCO Entertainment Inc., is a fantasy action-RPG
-                    adventure set within a world created by Hidetaka Miyazaki
-                    creator of the influential....
+                    {game.data[0].description}
                   </Title>
                   <Group>
                     <MediaQuery largerThan="sm" styles={{ display: "none" }}>
@@ -95,10 +101,10 @@ const Hero = () => {
                         3.6
                       </Avatar>
                       <Badge color="teal" size="sm" variant="outline">
-                        35 reviews
+                        {totalReview.length} REVIEWS
                       </Badge>
                       <Badge color="teal" size="sm" variant="outline">
-                        Jahidul Islam
+                        {game.data[0].email}
                       </Badge>
                     </Group>
                   </Group>
@@ -111,9 +117,7 @@ const Hero = () => {
                 <Box>
                   <AspectRatio ratio={16 / 9}>
                     <Image
-                      src={
-                        "https://images.unsplash.com/photo-1527118732049-c88155f2107c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80"
-                      }
+                      src={game.data[0].thumbnail}
                       height={"100%"}
                       width={"100%"}
                       layout="fill"

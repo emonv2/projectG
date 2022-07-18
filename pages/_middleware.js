@@ -6,7 +6,7 @@ const secrete = process.env.APP_SECRETE;
 export default function middleware(req) {
   const { cookies } = req;
 
-  const jwt = cookies.hash;
+  const jwt = cookies.token;
 
   const url = req.url;
 
