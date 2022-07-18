@@ -18,7 +18,7 @@ import { Eye } from "tabler-icons-react";
 
 import { setting } from "../utility/setting";
 
-const GamesSection = () => {
+const GamesSection = ({ gameSec }) => {
   return (
     <>
       <Paper>
@@ -30,7 +30,7 @@ const GamesSection = () => {
           mx="auto"
         >
           <Grid gutter={"xl"}>
-            {setting.gameData.map((games) => {
+            {gameSec.map((games) => {
               return (
                 <Grid.Col lg={4} md={6} sm={12} key={games.id}>
                   <Card shadow="sm" p="lg" key={games.id}>

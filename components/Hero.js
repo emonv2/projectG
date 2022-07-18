@@ -12,20 +12,18 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+
 import Image from "next/image";
-import React from "react";
-import { Eye, Tags } from "tabler-icons-react";
+import React, { useState } from "react";
+import { Eye } from "tabler-icons-react";
 
 const Hero = ({ game }) => {
-  console.log(game);
+  const futureGame = game.data[0];
 
-  const totalReview = game.data[0].review;
-  const tags = game.data[0].tag.split(",");
+  console.log(futureGame);
 
-  //console.log(tags);
-
-  //const mep = tags.filter((item) => item != " ");
-  console.log(mep);
+  const totalReview = futureGame.review;
+  const tags = futureGame.tag.split(",");
 
   return (
     <>
@@ -43,7 +41,7 @@ const Hero = ({ game }) => {
                 <Box>
                   <AspectRatio ratio={16 / 9}>
                     <Image
-                      src={game.data[0].thumbnail}
+                      src={futureGame.thumbnail}
                       height={"100%"}
                       width={"100%"}
                       layout="fill"
@@ -58,26 +56,23 @@ const Hero = ({ game }) => {
               <Box>
                 <Stack>
                   <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
-                    <Title order={5}>{game.data[0].title}</Title>
+                    <Title order={5}>{futureGame.title}</Title>
                   </MediaQuery>
                   <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
-                    <Title order={1}>{game.data[0].title}</Title>
+                    <Title order={1}>{futureGame.title}</Title>
                   </MediaQuery>
                   <Group>
-                    {tags.map((tag) => {
+                    {tags.map((tag) => (
                       <Badge color="teal" size="sm" variant="outline">
                         {tag}
-                      </Badge>;
-                    })}
-                    <Badge color="teal" size="sm" variant="outline">
-                      Player Unknown
-                    </Badge>
+                      </Badge>
+                    ))}
                   </Group>
                   <Title
                     order={6}
                     style={{ fontWeight: "400", textAlign: "justify" }}
                   >
-                    {game.data[0].description}
+                    {futureGame.description.slice(0, 400) + "....."}
                   </Title>
                   <Group>
                     <MediaQuery largerThan="sm" styles={{ display: "none" }}>
@@ -104,7 +99,7 @@ const Hero = ({ game }) => {
                         {totalReview.length} REVIEWS
                       </Badge>
                       <Badge color="teal" size="sm" variant="outline">
-                        {game.data[0].email}
+                        {futureGame.email.split("@")[0]}
                       </Badge>
                     </Group>
                   </Group>
@@ -117,7 +112,7 @@ const Hero = ({ game }) => {
                 <Box>
                   <AspectRatio ratio={16 / 9}>
                     <Image
-                      src={game.data[0].thumbnail}
+                      src={futureGame.thumbnail}
                       height={"100%"}
                       width={"100%"}
                       layout="fill"

@@ -7,6 +7,7 @@ import { Navbar } from "../components/Navbar";
 import RecentReviews from "../components/RecentReviews";
 import { useWindowScroll } from "@mantine/hooks";
 import { ArrowUp } from "tabler-icons-react";
+import { useEffect, useState } from "react";
 
 export default function Home({ games }) {
   const [scroll, scrollTo] = useWindowScroll();
@@ -40,7 +41,7 @@ export default function Home({ games }) {
         <Navbar />
         <Hero game={games} />
       </Paper>
-      <GamesSection />
+      {/* <GamesSection gameSec={gameSecs} /> */}
       <RecentReviews />
       <Footer />
     </div>
