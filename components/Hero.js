@@ -118,6 +118,7 @@ const Hero = ({ game }) => {
                   <AspectRatio ratio={16 / 9}>
                     <Image
                       src={futureGame.thumbnail}
+                      alt={futureGame.thumbnail}
                       height={"100%"}
                       width={"100%"}
                       layout="fill"
