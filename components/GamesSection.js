@@ -38,6 +38,7 @@ const GamesSection = ({ gameSec }) => {
                       <AspectRatio ratio={16 / 9}>
                         <Image
                           src={games.thumbnail}
+                          alt={games.thumbnail}
                           height={"100%"}
                           width={"100%"}
                           layout="fill"

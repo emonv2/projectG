@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import React, { useState } from "react";
 import { Eye } from "tabler-icons-react";
+import { v4 as uuidv4 } from "uuid";
 
 const Hero = ({ game }) => {
   const futureGame = game.data[0];
@@ -40,6 +41,7 @@ const Hero = ({ game }) => {
                   <AspectRatio ratio={16 / 9}>
                     <Image
                       src={futureGame.thumbnail}
+                      alt={futureGame.thumbnail}
                       height={"100%"}
                       width={"100%"}
                       layout="fill"
@@ -61,7 +63,12 @@ const Hero = ({ game }) => {
                   </MediaQuery>
                   <Group>
                     {tags.map((tag) => (
-                      <Badge color="teal" size="sm" variant="outline">
+                      <Badge
+                        color="teal"
+                        size="sm"
+                        variant="outline"
+                        key={uuidv4()}
+                      >
                         {tag}
                       </Badge>
                     ))}
