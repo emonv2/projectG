@@ -20,8 +20,6 @@ import { Eye } from "tabler-icons-react";
 const Hero = ({ game }) => {
   const futureGame = game.data[0];
 
-  console.log(futureGame);
-
   const totalReview = futureGame.review;
   const tags = futureGame.tag.split(",");
 

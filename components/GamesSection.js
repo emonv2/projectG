@@ -25,21 +25,19 @@ const GamesSection = ({ gameSec }) => {
         <Box
           sx={{
             maxWidth: "90%",
-            padding: "10px",
+            padding: "30px 10px",
           }}
           mx="auto"
         >
           <Grid gutter={"xl"}>
-            {gameSec.map((games) => {
+            {gameSec.data?.map((games) => {
               return (
                 <Grid.Col lg={4} md={6} sm={12} key={games.id}>
                   <Card shadow="sm" p="lg" key={games.id}>
                     <Card.Section>
                       <AspectRatio ratio={16 / 9}>
                         <Image
-                          src={
-                            "https://images.unsplash.com/photo-1527118732049-c88155f2107c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80"
-                          }
+                          src={games.thumbnail}
                           height={"100%"}
                           width={"100%"}
                           layout="fill"
@@ -54,11 +52,11 @@ const GamesSection = ({ gameSec }) => {
                     <Group position="apart" style={{ marginBottom: 6 }}>
                       <Avatar color="teal">5.7</Avatar>
                       <Badge color="teal" size="sm" variant="outline">
-                        35 reviews
+                        {games.review.length} reviews
                       </Badge>
                       <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
                         <Badge color="teal" size="sm" variant="outline">
-                          Jahidul Islam
+                          {games.email.split("@")[0]}
                         </Badge>
                       </MediaQuery>
                     </Group>
@@ -67,9 +65,7 @@ const GamesSection = ({ gameSec }) => {
                       order={6}
                       style={{ fontWeight: "400", lineHeight: 1.5 }}
                     >
-                      With Fjord Tours you can explore more of the magical fjord
-                      landscapes with tours and activities on and around the
-                      fjords of Norway
+                      {games.description.slice(0, 200) + "...."}
                     </Title>
 
                     <Button

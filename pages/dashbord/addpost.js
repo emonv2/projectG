@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppShell,
   Navbar,
@@ -22,9 +22,9 @@ import {
   MantineTheme,
   Notification,
   Modal,
+  Textarea,
 } from "@mantine/core";
 import { getAlert, setting } from "../../utility/setting";
-import RichTextEditor from "../../components/RicText";
 import { v4 as uuidv4 } from "uuid";
 import { useInputState } from "@mantine/hooks";
 
@@ -376,14 +376,11 @@ const AddPost = () => {
             description="Type your description about your games"
             sx={{ paddingTop: "10px" }}
           >
-            <RichTextEditor
+            <Textarea
+              placeholder="Say something about it"
               value={description}
               onChange={setDescription}
-              controls={[
-                ["bold", "italic", "underline", "link"],
-                ["unorderedList", "h1", "h2", "h3", "h4", "h5", "h6"],
-                ["alignLeft", "alignCenter", "alignRight"],
-              ]}
+              required
             />
           </InputWrapper>
 
@@ -422,19 +419,6 @@ const AddPost = () => {
           >
             Your post successfully added.
           </Modal>
-          {/* {tost ? (
-            <>
-              <Notification
-                icon={<Check size={18} />}
-                color="teal"
-                title="Teal notification"
-              >
-                This is teal notification with icon
-              </Notification>
-            </>
-          ) : (
-            ""
-          )} */}
         </Box>
       </AppShell>
     </>

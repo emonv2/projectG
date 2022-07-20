@@ -1,17 +1,13 @@
-import { Affix, Button, Paper, Transition } from "@mantine/core";
+import { Paper } from "@mantine/core";
 import Head from "next/head";
 import Footer from "../components/Footer";
 import GamesSection from "../components/GamesSection";
 import Hero from "../components/Hero";
 import { Navbar } from "../components/Navbar";
 import RecentReviews from "../components/RecentReviews";
-import { useWindowScroll } from "@mantine/hooks";
-import { ArrowUp } from "tabler-icons-react";
 import { useEffect, useState } from "react";
 
-export default function Home({ games }) {
-  const [scroll, scrollTo] = useWindowScroll();
-
+export default function Home({ games, section }) {
   return (
     <div>
       <Head>
@@ -22,27 +18,13 @@ export default function Home({ games }) {
         />
       </Head>
 
-      <Affix position={{ bottom: 20, right: 20 }}>
-        <Transition transition="slide-up" mounted={scroll.y > 0}>
-          {(transitionStyles) => (
-            <Button
-              leftIcon={<ArrowUp />}
-              style={transitionStyles}
-              onClick={() => scrollTo({ y: 0 })}
-              color="teal"
-            >
-              Scroll to top
-            </Button>
-          )}
-        </Transition>
-      </Affix>
-
       <Paper radius={0} style={{ background: "#F8F9FA" }}>
         <Navbar />
-        <Hero game={games} />
+        <Hero game={games} key={games.data[0]._id} />
       </Paper>
-      {/* <GamesSection gameSec={gameSecs} /> */}
+      <GamesSection gameSec={section} />
       <RecentReviews />
+
       <Footer />
     </div>
   );
@@ -58,7 +40,13 @@ export const getServerSideProps = async ({ req, res }) => {
     options
   );
 
-  const data = await resData.json();
+  const resData2 = await fetch(
+    "https://gamerhubapi.herokuapp.com/games/section",
+    options
+  );
 
-  return { props: { games: data } };
+  const data = await resData.json();
+  const data2 = await resData2.json();
+
+  return { props: { games: data, section: data2 } };
 };
