@@ -14,9 +14,8 @@ import {
   Title,
 } from "@mantine/core";
 import Image from "next/image";
+import Link from "next/link";
 import { Eye } from "tabler-icons-react";
-
-import { setting } from "../utility/setting";
 
 const GamesSection = ({ gameSec }) => {
   return (
@@ -68,16 +67,17 @@ const GamesSection = ({ gameSec }) => {
                     >
                       {games.description.slice(0, 200) + "...."}
                     </Title>
-
-                    <Button
-                      variant="filled"
-                      color="teal"
-                      radius="lg"
-                      style={{ marginTop: 14 }}
-                      leftIcon={<Eye />}
-                    >
-                      View Details
-                    </Button>
+                    <Link href={`/games/${games._id}`} passHref>
+                      <Button
+                        variant="filled"
+                        color="teal"
+                        radius="lg"
+                        style={{ marginTop: 14 }}
+                        leftIcon={<Eye />}
+                      >
+                        View Details
+                      </Button>
+                    </Link>
                   </Card>
                 </Grid.Col>
               );

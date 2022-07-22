@@ -14,6 +14,7 @@ import {
 } from "@mantine/core";
 
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 import { Eye } from "tabler-icons-react";
 import { v4 as uuidv4 } from "uuid";
@@ -80,21 +81,25 @@ const Hero = ({ game }) => {
                     {futureGame.description.slice(0, 400) + "....."}
                   </Title>
                   <Group>
-                    <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-                      <Button
-                        color="teal"
-                        radius="lg"
-                        leftIcon={<Eye />}
-                        fullWidth
-                      >
-                        View Details
-                      </Button>
-                    </MediaQuery>
-                    <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-                      <Button color="teal" radius="lg" leftIcon={<Eye />}>
-                        View Details
-                      </Button>
-                    </MediaQuery>
+                    <Link href={`/games/${futureGame._id}`} passHref>
+                      <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+                        <Button
+                          color="teal"
+                          radius="lg"
+                          leftIcon={<Eye />}
+                          fullWidth
+                        >
+                          View Details
+                        </Button>
+                      </MediaQuery>
+                    </Link>
+                    <Link href={`/games/${futureGame._id}`} passHref>
+                      <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+                        <Button color="teal" radius="lg" leftIcon={<Eye />}>
+                          View Details
+                        </Button>
+                      </MediaQuery>
+                    </Link>
 
                     <Group style={{ height: "100%", justifyContent: "center" }}>
                       <Avatar color="red" radius="xl">
