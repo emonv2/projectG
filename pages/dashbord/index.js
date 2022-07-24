@@ -25,7 +25,7 @@ import { getCookie } from "cookies-next";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 
-const Dashbord = () => {
+const Dashbord = ({ games, reviews }) => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
 
@@ -208,7 +208,7 @@ const Dashbord = () => {
                   <Title order={2} mb={0} pb={0}>
                     GAMES
                   </Title>
-                  <Text style={{ fontSize: "3rem" }}>150</Text>
+                  <Text style={{ fontSize: "3rem" }}>{games.data}</Text>
                 </Stack>
               </Box>
             </Grid.Col>
@@ -228,7 +228,7 @@ const Dashbord = () => {
                   <Title order={2} mb={0} pb={0}>
                     REVIEWS
                   </Title>
-                  <Text style={{ fontSize: "3rem" }}>150</Text>
+                  <Text style={{ fontSize: "3rem" }}>{reviews.data}</Text>
                 </Stack>
               </Box>
             </Grid.Col>
@@ -250,3 +250,28 @@ const Dashbord = () => {
 };
 
 export default Dashbord;
+
+export const getServerSideProps = async ({ req, res, params }) => {
+  const tok = getCookie("token", { req, res });
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${tok}`,
+    },
+  };
+
+  const resData = await fetch(
+    `https://gamerhubapi.herokuapp.com/games/totalgames`,
+    options
+  );
+
+  const resData2 = await fetch(
+    `https://gamerhubapi.herokuapp.com/reviews/totalown`,
+    options
+  );
+
+  const data = await resData.json();
+  const data2 = await resData2.json();
+
+  return { props: { games: data, reviews: data2 } };
+};

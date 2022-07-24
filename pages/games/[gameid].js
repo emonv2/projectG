@@ -27,8 +27,6 @@ import { getCookie } from "cookies-next";
 import Head from "next/head";
 
 export default function MyGames({ games }) {
-  console.log(games);
-
   const [review, setReview] = useInputState("");
   const [rating, setRating] = useState(0);
   const [openedModel, setOpenedModel] = useState(false);
@@ -148,7 +146,7 @@ export default function MyGames({ games }) {
                 </Grid.Col>
                 <Grid.Col span={4}>
                   <Avatar radius="md" size="lg" color={"red"}>
-                    {games.data.review?.length}
+                    {games.data.review === "" ? "0" : games.data.review.length}
                   </Avatar>
                 </Grid.Col>
               </Grid>
@@ -282,7 +280,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
   };
 
   const resData = await fetch(
-    `https://gamerhubapi.herokuapp.com/games/${params.gameid}`,
+    `https://gamerhubapi.herokuapp.com/games/single/${params.gameid}`,
     options
   );
 

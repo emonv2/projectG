@@ -246,7 +246,7 @@ export const getServerSideProps = async ({ req, res }) => {
   };
 
   const resData = await fetch(
-    "https://gamerhubapi.herokuapp.com/games",
+    "https://gamerhubapi.herokuapp.com/games/own",
     options
   );
 
