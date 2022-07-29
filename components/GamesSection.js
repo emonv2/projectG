@@ -30,6 +30,11 @@ const GamesSection = ({ gameSec }) => {
         >
           <Grid gutter={"xl"}>
             {gameSec.data?.map((games) => {
+              const totalRate = games.review
+                ?.map((item) => item.rate)
+                .reduce((partialSum, a) => partialSum + a, 0);
+              const avarageRate = totalRate / games.review?.length;
+              const actualRate = avarageRate.toFixed(1);
               return (
                 <Grid.Col lg={4} md={6} sm={12} key={games.id}>
                   <Card shadow="sm" p="lg" key={games.id}>
@@ -38,8 +43,6 @@ const GamesSection = ({ gameSec }) => {
                         <Image
                           src={games.thumbnail}
                           alt={games.thumbnail}
-                          height={"100%"}
-                          width={"100%"}
                           layout="fill"
                           objectFit="cover"
                           priority
@@ -50,7 +53,9 @@ const GamesSection = ({ gameSec }) => {
                     <Title order={4}>{games.title}</Title>
                     <Space h="sm" />
                     <Group position="apart" style={{ marginBottom: 6 }}>
-                      <Avatar color="teal">5.7</Avatar>
+                      <Avatar color="teal">
+                        {actualRate === "NaN" ? "0.0" : actualRate}
+                      </Avatar>
                       <Badge color="teal" size="sm" variant="outline">
                         {games.review.length} reviews
                       </Badge>

@@ -18,9 +18,16 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { Eye } from "tabler-icons-react";
 import { v4 as uuidv4 } from "uuid";
+import { forwardRef } from "react";
 
 const Hero = ({ game }) => {
   const futureGame = game.data[0];
+
+  const htotalRate = futureGame.review
+    .map((hitem) => hitem.rate)
+    .reduce((hpartialSum, a) => hpartialSum + a, 0);
+  const havarageRate = htotalRate / futureGame.review.length;
+  const hactualRate = havarageRate.toFixed(1);
 
   const totalReview = futureGame.review;
   const tags = futureGame.tag.split(",");
@@ -81,7 +88,7 @@ const Hero = ({ game }) => {
                     {futureGame.description.slice(0, 400) + "....."}
                   </Title>
                   <Group>
-                    <Link href={`/games/${futureGame._id}`} passHref>
+                    <Link href={`/games/${futureGame._id}`} forwardRef>
                       <MediaQuery largerThan="sm" styles={{ display: "none" }}>
                         <Button
                           color="teal"
@@ -93,7 +100,7 @@ const Hero = ({ game }) => {
                         </Button>
                       </MediaQuery>
                     </Link>
-                    <Link href={`/games/${futureGame._id}`} passHref>
+                    <Link href={`/games/${futureGame._id}`} forwardRef>
                       <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
                         <Button color="teal" radius="lg" leftIcon={<Eye />}>
                           View Details
@@ -103,7 +110,7 @@ const Hero = ({ game }) => {
 
                     <Group style={{ height: "100%", justifyContent: "center" }}>
                       <Avatar color="red" radius="xl">
-                        3.6
+                        {hactualRate === "NaN" ? "0.0" : hactualRate}
                       </Avatar>
                       <Badge color="teal" size="sm" variant="outline">
                         {totalReview.length} REVIEWS

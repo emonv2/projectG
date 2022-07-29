@@ -27,6 +27,8 @@ import { getCookie } from "cookies-next";
 import Head from "next/head";
 
 export default function MyGames({ games }) {
+  const eb = games.data.review;
+
   const [review, setReview] = useInputState("");
   const [rating, setRating] = useState(0);
   const [openedModel, setOpenedModel] = useState(false);
@@ -36,7 +38,6 @@ export default function MyGames({ games }) {
 
   useEffect(() => {
     setToken(getCookie("token"));
-
     if (token) {
       setLogged(true);
     }
@@ -146,7 +147,9 @@ export default function MyGames({ games }) {
                 </Grid.Col>
                 <Grid.Col span={4}>
                   <Avatar radius="md" size="lg" color={"red"}>
-                    {games.data.review === "" ? "0" : games.data.review.length}
+                    {games.data.review.length === 0
+                      ? "0"
+                      : games.data.review.length}
                   </Avatar>
                 </Grid.Col>
               </Grid>
@@ -204,69 +207,70 @@ export default function MyGames({ games }) {
                 </Center>
               </Box>
             ) : (
-              ""
-            )}
-            <Box p={"xl"}>
-              <Text>
-                Please
-                <Text
-                  color={"teal"}
-                  component="span"
-                  weight={700}
-                  underline
-                  ml={"5px"}
-                >
-                  login
-                </Text>{" "}
-                ,{" "}
-                <Text
-                  color={"teal"}
-                  component="span"
-                  weight={700}
-                  underline
-                  mr={"5px"}
-                >
-                  sign up
+              <Box p={"xl"}>
+                <Text>
+                  Please
+                  <Text
+                    color={"teal"}
+                    component="span"
+                    weight={700}
+                    underline
+                    ml={"5px"}
+                  >
+                    login
+                  </Text>{" "}
+                  ,{" "}
+                  <Text
+                    color={"teal"}
+                    component="span"
+                    weight={700}
+                    underline
+                    mr={"5px"}
+                  >
+                    sign up
+                  </Text>
+                  for add reviews for this game. If you lgoin then you are able
+                  to add your own reviews for this game
                 </Text>
-                for add reviews for this game. If you lgoin then you are able to
-                add your own reviews for this game
-              </Text>
-            </Box>
+              </Box>
+            )}
           </Grid.Col>
         </Grid>
         <Box p={"xl"}>
           {games.data.review?.map((game) => {
             return (
-              <Grid style={{ alignItems: "center" }}>
-                <Grid.Col lg={3} md={12}>
-                  <Grid>
-                    <Grid.Col span={3}>
-                      <Avatar radius="md" size="lg" color={"red"}>
-                        {game.rate}
-                      </Avatar>
-                    </Grid.Col>
-                    <Grid.Col span={9}>
-                      <Text>Posted by</Text>
-                      <Title order={4}>{game.email}</Title>
-                    </Grid.Col>
-                  </Grid>
-                </Grid.Col>
-                <Grid.Col lg={9} md={12}>
-                  <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
-                    <Title order={4} style={{ fontStyle: "italic" }}>
-                      {game.comment}
-                    </Title>
-                  </MediaQuery>
-                  <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
-                    <Title order={3} style={{ fontStyle: "italic" }}>
-                      {game.comment}
-                    </Title>
-                  </MediaQuery>
-                </Grid.Col>
-              </Grid>
+              <>
+                <Grid style={{ alignItems: "center" }} key={game._id}>
+                  <Grid.Col lg={3} md={12}>
+                    <Grid>
+                      <Grid.Col span={3}>
+                        <Avatar radius="md" size="lg" color={"red"}>
+                          {game.rate}
+                        </Avatar>
+                      </Grid.Col>
+                      <Grid.Col span={9}>
+                        <Text>Posted by</Text>
+                        <Title order={4}>{game.email}</Title>
+                      </Grid.Col>
+                    </Grid>
+                  </Grid.Col>
+                  <Grid.Col lg={9} md={12}>
+                    <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
+                      <Title order={4} style={{ fontStyle: "italic" }}>
+                        {game.comment}
+                      </Title>
+                    </MediaQuery>
+                    <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
+                      <Title order={3} style={{ fontStyle: "italic" }}>
+                        {game.comment}
+                      </Title>
+                    </MediaQuery>
+                  </Grid.Col>
+                </Grid>
+                <Divider my="md" variant="dashed" />
+              </>
             );
           })}
-          <Divider my="md" variant="dashed" />
         </Box>
       </Box>
       <Footer />

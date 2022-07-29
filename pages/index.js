@@ -5,7 +5,7 @@ import GamesSection from "../components/GamesSection";
 import Hero from "../components/Hero";
 import { Navbar } from "../components/Navbar";
 import RecentReviews from "../components/RecentReviews";
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef } from "react";
 
 export default function Home({ games, section }) {
   return (
